@@ -16,6 +16,7 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  await DbServices.initBoxes();
   SharedPreferenceHelper.preferences = await SharedPreferences.getInstance();
   runApp(
     const MyApp(),
@@ -35,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    DbServices.initBoxes();
+    // DbServices.initBoxes();
   }
 
   @override

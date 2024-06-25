@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:ayna_task/blocs/chats_bloc/chat_bloc.dart';
+import 'package:ayna_task/blocs/chats_bloc/chat_events.dart';
 import 'package:ayna_task/config/environment.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
@@ -35,6 +37,14 @@ mixin AppSocketHelper {
     socket.messages.listen((message) {
       // Handle incoming messages.
       log("Incoming Message : $message");
+      if (!RegExp(r'Request served by [a-zA-Z0-9]+').hasMatch(message)) {
+        ChatsBloc().add(
+          HandleCreateChatEvent(
+            message,
+            byServer: true,
+          ),
+        );
+      }
     });
   }
 

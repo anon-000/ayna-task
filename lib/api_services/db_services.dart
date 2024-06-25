@@ -13,6 +13,7 @@ class DbServices {
   static late final CollectionBox chatsBox;
 
   static initBoxes() async {
+    log("initBoxes ....>>>>>>>>>>>");
     // Create a box collection
     collection = await BoxCollection.open(
       'AyanaDB', // Name of your database
@@ -79,7 +80,7 @@ class DbServices {
   static Future<List<Map<String, dynamic>>> getAllChats() async {
     final data = await chatsBox.getAllValues();
     log("$data");
-    return [data];
+    return data.values.map((e) => Map<String, dynamic>.from(e)).toList();
   }
 
   // ADD A CHAT >>>>>>>>

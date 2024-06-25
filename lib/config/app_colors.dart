@@ -11,4 +11,5 @@ mixin AppColors {
   static const greyTextColor = Color(0xff525252);
   static const textFieldBorder = Color(0x207F265B);
   static const loginSideBG = Color(0xffFFE6C9);
+  static const chatServerBG = Color(0xffEEEEEE);
 }
