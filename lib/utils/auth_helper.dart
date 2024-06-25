@@ -8,7 +8,7 @@ import 'package:ayna_task/utils/shared_preference_helper.dart';
 ///
 
 class AuthHelper {
-  static bool get isLoggedIn => SharedPreferenceHelper.accessToken != null;
+  static bool get isLoggedIn => SharedPreferenceHelper.user != null;
 
   static Future<dynamic> userLoginWithEmail(
       String email, String password) async {
@@ -32,9 +32,9 @@ class AuthHelper {
           throw "Given password is incorrect";
         }
       }
-    } catch (err, s) {
-      log("$err");
-      // throw ("$err");
+    } catch (err) {
+      log("In auth Helper : $err");
+      throw ("$err");
     }
   }
 
@@ -49,8 +49,8 @@ class AuthHelper {
       });
       return res;
     } catch (err, s) {
-      log("$err");
-      // throw ("$err");
+      // log("$err");
+      throw ("$err");
     }
   }
 }

@@ -1,15 +1,17 @@
+import 'dart:developer';
+
 import 'package:ayna_task/blocs/auth_bloc/auth_bloc.dart';
 import 'package:ayna_task/blocs/auth_bloc/auth_events.dart';
 import 'package:ayna_task/blocs/base_state.dart';
 import 'package:ayna_task/config/app_assets.dart';
 import 'package:ayna_task/config/app_colors.dart';
 import 'package:ayna_task/config/app_decorations.dart';
-import 'package:ayna_task/utils/auth_helper.dart';
 import 'package:ayna_task/widgets/buttons/app_primary_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../config/environment.dart';
 import '../../utils/validation_helper.dart';
 
@@ -27,6 +29,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  AuthBloc get bloc => AuthBloc();
+
   bool get isLogin => AuthBloc().authType == 0;
 
   @override
@@ -77,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 20),
                       Text(
                         isLogin ? "Login to your Account" : "Create an Account",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w700,
                           color: AppColors.greyTextColor,
@@ -91,12 +95,23 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
+                      if (!isLogin) ...[
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.next,
+                          onChanged: (v) => bloc.add(HandleNameChangeEvent(v)),
+                          decoration:
+                              AppDecorations.textFieldDecoration(context)
+                                  .copyWith(hintText: "Example : Auro"),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         validator: (v) =>
                             AppFormValidators.validateMail(v, context),
-                        onSaved: (v) {},
+                        onChanged: (v) => bloc.add(HandleEmailChangeEvent(v)),
                         decoration: AppDecorations.textFieldDecoration(context)
                             .copyWith(hintText: "mail@abc.com"),
                       ),
@@ -106,32 +121,39 @@ class _LoginPageState extends State<LoginPage> {
                         textInputAction: TextInputAction.next,
                         validator: (v) =>
                             AppFormValidators.validateMail(v, context),
-                        onSaved: (v) {},
+                        onChanged: (v) =>
+                            bloc.add(HandlePasswordChangeEvent(v)),
                         decoration: AppDecorations.textFieldDecoration(context)
                             .copyWith(hintText: "******************"),
                       ),
-                      const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Checkbox(value: true, onChanged: (c) {}),
-                            const Text("Remember Me")
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         child: AppPrimaryButton(
                           width: double.infinity,
                           child: const Text("Login"),
                           onPressed: () {
-                            // AuthHelper.userSignUpWithEmail("Abc", "abc@gmail.com", "ABC@123");
-                            AuthHelper.userLoginWithEmail(
-                                "abc@gmail.com", "ABC@123");
+                            if (isLogin) {
+                              bloc.add(
+                                HandleLoginEvent(
+                                  onSuccess: () {
+                                    try {
+                                      GoRouter.of(context).pushReplacementNamed('/chats');
+                                    } catch (err) {
+                                      log("$err");
+                                    }
+                                  },
+                                ),
+                              );
+                            } else {
+                              bloc.add(
+                                HandleSignUpEvent(
+                                  onSuccess: () {
+                                    GoRouter.of(context).pushReplacementNamed('/chats');
+                                  },
+                                ),
+                              );
+                            }
                           },
                         ),
                       ),
@@ -139,7 +161,9 @@ class _LoginPageState extends State<LoginPage> {
                       Center(
                         child: RichText(
                           text: TextSpan(
-                            text: "Not Registered Yet? ",
+                            text: isLogin
+                                ? "Not Registered Yet? "
+                                : "Already have an account? ",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: Environment.fontFamily,
@@ -148,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             children: <TextSpan>[
                               TextSpan(
-                                text: " Create an account.",
+                                text:
+                                    isLogin ? " Create an account." : " Login.",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 15,

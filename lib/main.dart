@@ -5,11 +5,15 @@ import 'package:ayna_task/config/app_page_routes.dart';
 import 'package:ayna_task/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toastification/toastification.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() async {
+  usePathUrlStrategy();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   SharedPreferenceHelper.preferences = await SharedPreferences.getInstance();
@@ -43,12 +47,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ChatsBloc>(create: (context) => ChatsBloc()),
-        BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-      ],
-      child: ToastificationWrapper(
+    return ToastificationWrapper(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ChatsBloc>(create: (context) => ChatsBloc()),
+          BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+        ],
         child: MaterialApp.router(
           title: 'Ayna Task',
           theme: ThemeData(
@@ -59,6 +63,8 @@ class _MyAppState extends State<MyApp> {
             scaffoldBackgroundColor: Colors.white,
           ),
           routerConfig: AppPages.router,
+          // routerDelegate: AppPages.router.routerDelegate,
+          // routeInformationParser: AppPages.router.routeInformationParser,
           debugShowCheckedModeBanner: false,
         ),
       ),

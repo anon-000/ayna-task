@@ -1,37 +1,50 @@
-import 'dart:developer';
-
-import 'package:ayna_task/blocs/auth_bloc/auth_bloc.dart';
-import 'package:ayna_task/blocs/auth_bloc/auth_states.dart';
 import 'package:flutter/material.dart';
-
-import '../base_state.dart';
 
 ///
 /// Created by Auro on 25/06/24
 ///
 
 @immutable
-abstract class AuthEvent {
-  Stream<BaseState> applyAsync({BaseState currentState, AuthBloc bloc});
-}
+abstract class AuthEvent {}
 
 class HandleAuthTypeEvent extends AuthEvent {
   final int type;
 
   HandleAuthTypeEvent(this.type);
+}
 
-  @override
-  String toString() => 'HandleAuthTypeEvent';
+class HandleAutoValidateEvent extends AuthEvent {
+  final AutovalidateMode autoValidateMode;
 
-  @override
-  Stream<BaseState> applyAsync(
-      {BaseState? currentState, AuthBloc? bloc}) async* {
-    try {
-      bloc!.authType = type;
-      yield AuthLoadedState();
-    } catch (e, s) {
-      log("Error", error: e, stackTrace: s);
-      yield AuthLoadedState();
-    }
-  }
+  HandleAutoValidateEvent(this.autoValidateMode);
+}
+
+class HandleLoginEvent extends AuthEvent {
+  final VoidCallback? onSuccess;
+
+  HandleLoginEvent({this.onSuccess});
+}
+
+class HandleSignUpEvent extends AuthEvent {
+  final VoidCallback? onSuccess;
+
+  HandleSignUpEvent({this.onSuccess});
+}
+
+class HandleNameChangeEvent extends AuthEvent {
+  final String name;
+
+  HandleNameChangeEvent(this.name);
+}
+
+class HandlePasswordChangeEvent extends AuthEvent {
+  final String password;
+
+  HandlePasswordChangeEvent(this.password);
+}
+
+class HandleEmailChangeEvent extends AuthEvent {
+  final String email;
+
+  HandleEmailChangeEvent(this.email);
 }
