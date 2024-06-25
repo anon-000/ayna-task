@@ -5,4 +5,5 @@ library;
 
 mixin Environment {
   static const webSocketURL = 'wss://echo.websocket.org/';
+  static const fontFamily = 'Roboto';
 }

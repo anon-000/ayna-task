@@ -1,3 +1,4 @@
+import 'package:ayna_task/data_models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 ///
@@ -17,4 +18,14 @@ class SharedPreferenceHelper {
       preferences?.setString(ACCESS_TOKEN_KEY, token);
     }
   }
+
+  static void storeUser(User? user) {
+    if (user != null) {
+      preferences?.setString(USER_KEY, userToJson(user));
+    }
+  }
+
+  static User? get user => preferences?.getString(USER_KEY) == null
+      ? null
+      : userFromJson(preferences?.getString(USER_KEY) ?? '');
 }

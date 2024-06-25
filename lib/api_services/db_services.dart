@@ -30,22 +30,26 @@ class DbServices {
   // GET ALL USERS >>>>>>>>
   static Future<List<Map<String, dynamic>>> getAllUsers() async {
     final data = await usersBox.getAllValues();
-    log("$data");
-    return [data];
+    return data.values.map((e) => Map<String, dynamic>.from(e)).toList();
   }
 
   // ADD USER >>>>>>>>
-  static Future<Map<String, dynamic>> createUser(
+  static Future<Map<String, dynamic>?> createUser(
       Map<String, dynamic> datum) async {
-    ObjectId id = ObjectId();
-    String generatedId = id.oid;
-    Map<String, dynamic> body = {
-      ...datum,
-      '_id': generatedId,
-      'createdAt': DateTime.now().toIso8601String(),
-    };
-    await usersBox.put(generatedId, body);
-    return body;
+    final user = await getUserByEmail(datum['email']);
+    if (user == null || user.entries.isEmpty) {
+      ObjectId id = ObjectId();
+      String generatedId = id.oid;
+      Map<String, dynamic> body = {
+        ...datum,
+        '_id': generatedId,
+        'createdAt': DateTime.now().toIso8601String(),
+      };
+      await usersBox.put(generatedId, body);
+      return body;
+    } else {
+      throw "Email ID is already registered with us.";
+    }
   }
 
   // DELETE USER
@@ -56,6 +60,15 @@ class DbServices {
   // GET USER BY ID
   static Future<Map<String, dynamic>> getUserById(String id) async {
     return await usersBox.get(id);
+  }
+
+  // GET USER BY EMAIL
+  static Future<Map<String, dynamic>?> getUserByEmail(String email) async {
+    final data = await usersBox.getAllValues();
+    log("Result $data");
+    return data.values
+        .map((e) => Map<String, dynamic>.from(e))
+        .firstWhere((e) => e['email'] == email, orElse: () => {});
   }
 
   ///
