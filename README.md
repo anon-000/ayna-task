@@ -1,6 +1,6 @@
-# ayna_task
+# ayna_task ( Flutter Web Assignment )
 
-My Gateway to Ayna AI
+Gateway to Ayna AI
 
 ## More Details
 
@@ -26,6 +26,7 @@ This a Flutter Web Application I have developed recently to deal with web socket
 
 
 </br>
+</br>
 
 Login with email & password :
 
@@ -38,11 +39,13 @@ Chat With Web Socket Echo Server:
 <video src="https://github.com/anon-000/ayna-task/assets/52295426/ea15106f-0ad7-4ba6-bc39-bdb5353fbbec"></video>
 
 </br>
+</br>
 
 Responsiveness :
 
 <video src="https://github.com/anon-000/ayna-task/assets/52295426/c7bc41b9-a420-436c-affb-9b5500290ffe"></video>
 
+</br>
 </br>
 
 
