@@ -23,20 +23,27 @@ This a Flutter Web Application I have developed recently to deal with web socket
 
 
 
+
+
+</br>
+
 Login with email & password :
 
 <video src="https://github.com/anon-000/ayna-task/assets/52295426/f146389b-2aad-4396-bebc-53593a112a1a"></video>
 
-
+</br>
 
 Chat With Web Socket Echo Server:
 
 <video src="https://github.com/anon-000/ayna-task/assets/52295426/ea15106f-0ad7-4ba6-bc39-bdb5353fbbec"></video>
 
+</br>
 
+Responsiveness :
 
+<video src="https://github.com/anon-000/ayna-task/assets/52295426/c7bc41b9-a420-436c-affb-9b5500290ffe"></video>
 
-
+</br>
 
 
 
