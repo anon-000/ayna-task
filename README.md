@@ -23,6 +23,8 @@ This a Flutter Web Application I have developed recently to deal with web socket
 
 
 
+Login with email & password :
+
 
 
 Chat With Web Socket Echo Server:
