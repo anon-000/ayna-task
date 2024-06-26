@@ -25,10 +25,7 @@ This a Flutter Web Application I have developed recently to deal with web socket
 
 Login with email & password :
 
-<video width="600" controls>
-  <source src="login.mov" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<video src="https://github.com/anon-000/ayna-task/login.mov"></video>
 
 
 Chat With Web Socket Echo Server:
