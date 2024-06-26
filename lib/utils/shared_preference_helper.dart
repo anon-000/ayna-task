@@ -22,10 +22,16 @@ class SharedPreferenceHelper {
   static void storeUser(User? user) {
     if (user != null) {
       preferences?.setString(USER_KEY, userToJson(user));
+    } else {
+      preferences?.remove(USER_KEY);
     }
   }
 
   static User? get user => preferences?.getString(USER_KEY) == null
       ? null
       : userFromJson(preferences?.getString(USER_KEY) ?? '');
+
+  static void clear() {
+    preferences?.clear();
+  }
 }

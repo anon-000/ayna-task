@@ -32,6 +32,16 @@ class ChatsPage extends StatefulWidget {
 class _ChatsPageState extends State<ChatsPage> {
   ChatsBloc get bloc => ChatsBloc();
 
+  bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 800;
+
+  bool isTablet(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 600 &&
+      MediaQuery.of(context).size.width < 900;
+
+  bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 600;
+
   @override
   void initState() {
     super.initState();
@@ -62,13 +72,14 @@ class _ChatsPageState extends State<ChatsPage> {
         child: Center(
           child: Container(
             clipBehavior: Clip.antiAlias,
-            margin: const EdgeInsets.all(16),
+            margin: EdgeInsets.all(isDesktop(context) ? 16 : 0),
             constraints: const BoxConstraints(maxWidth: 700),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border:
-                  Border.all(color: const Color(0xffcccccc).withOpacity(0.6)),
+              borderRadius: BorderRadius.circular(isDesktop(context) ? 10 : 0),
+              border: isDesktop(context)
+                  ? Border.all(color: const Color(0xffcccccc).withOpacity(0.6))
+                  : null,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,6 +129,7 @@ class _ChatsPageState extends State<ChatsPage> {
                           );
                           if (result != null && result) {
                             SharedPreferenceHelper.storeUser(null);
+                            SharedPreferenceHelper.clear();
                             GoRouter.of(context).pushReplacementNamed('/login');
                           }
                         },

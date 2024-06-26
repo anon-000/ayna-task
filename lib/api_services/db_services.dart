@@ -37,8 +37,8 @@ class DbServices {
   // ADD USER >>>>>>>>
   static Future<Map<String, dynamic>?> createUser(
       Map<String, dynamic> datum) async {
-    final user = await getUserByEmail(datum['email']);
-    if (user == null || user.entries.isEmpty) {
+    final user = await usersBox.get(datum['email']);
+    if (user == null) {
       ObjectId id = ObjectId();
       String generatedId = id.oid;
       Map<String, dynamic> body = {
@@ -46,7 +46,7 @@ class DbServices {
         '_id': generatedId,
         'createdAt': DateTime.now().toIso8601String(),
       };
-      await usersBox.put(generatedId, body);
+      await usersBox.put(datum['email'], body);
       return body;
     } else {
       throw "Email ID is already registered with us.";
@@ -81,6 +81,15 @@ class DbServices {
     final data = await chatsBox.getAllValues();
     log("$data");
     return data.values.map((e) => Map<String, dynamic>.from(e)).toList();
+  }
+
+  static Future<List<Map<String, dynamic>>> getAllChatsByUser(String id) async {
+    final data = await chatsBox.getAllValues();
+    return data.values
+        .map((e) => Map<String, dynamic>.from(e))
+        .toList()
+        .where((e) => e['conversation'] == id)
+        .toList();
   }
 
   // ADD A CHAT >>>>>>>>

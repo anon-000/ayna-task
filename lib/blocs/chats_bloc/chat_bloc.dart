@@ -44,7 +44,8 @@ class ChatsBloc extends Bloc<ChatsEvent, BaseState> {
     try {
       chats = [];
       emit(LoadingBaseState());
-      final result = await DbServices.getAllChats();
+      final result =
+          await DbServices.getAllChatsByUser(SharedPreferenceHelper.user!.id!);
       final tempList = List<Chat>.from(result.map((e) => Chat.fromJson(e)))
           .reversed
           .toList();
