@@ -1,6 +1,7 @@
 import 'package:ayna_task/api_services/db_services.dart';
 import 'package:ayna_task/blocs/auth_bloc/auth_bloc.dart';
 import 'package:ayna_task/blocs/chats_bloc/chat_bloc.dart';
+import 'package:ayna_task/config/app_colors.dart';
 import 'package:ayna_task/config/app_page_routes.dart';
 import 'package:ayna_task/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
@@ -57,8 +58,9 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp.router(
           title: 'Ayna Task',
           theme: ThemeData(
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: const Color(0xff7F265B)),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primaryColor,
+            ),
             useMaterial3: true,
             canvasColor: Colors.white,
             scaffoldBackgroundColor: Colors.white,

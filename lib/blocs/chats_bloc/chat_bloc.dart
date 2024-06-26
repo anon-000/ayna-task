@@ -45,8 +45,9 @@ class ChatsBloc extends Bloc<ChatsEvent, BaseState> {
       chats = [];
       emit(LoadingBaseState());
       final result = await DbServices.getAllChats();
-      final tempList =
-          List<Chat>.from(result.map((e) => Chat.fromJson(e))).toList();
+      final tempList = List<Chat>.from(result.map((e) => Chat.fromJson(e)))
+          .reversed
+          .toList();
       developer.log("$result");
       if (tempList.isEmpty) {
         emit(EmptyBaseState());
@@ -74,10 +75,11 @@ class ChatsBloc extends Bloc<ChatsEvent, BaseState> {
         "createdBy":
             event.byServer ? "SERVER" : SharedPreferenceHelper.user!.id,
         "conversation": SharedPreferenceHelper.user!.id,
+        "createdAt": DateTime.now().toIso8601String(),
       };
 
       /// add temp chat
-      chats.add(Chat.fromJson(body));
+      chats.insert(0, Chat.fromJson(body));
       textEditingController.clear();
       emit(ChatsLoadedState());
 

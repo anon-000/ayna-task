@@ -16,6 +16,42 @@ mixin AppFormValidators {
     return null;
   }
 
+  static String? validateStrongPassword(
+      String? password, BuildContext context) {
+    // Check if password is null or empty
+    if (password == null || password.trim().isEmpty) {
+      return "Password is required";
+    }
+
+    // Check length
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+
+    // Check for uppercase letter
+    if (!RegExp(r'[A-Z]').hasMatch(password)) {
+      return "Password must contain at least one uppercase letter";
+    }
+
+    // Check for lowercase letter
+    if (!RegExp(r'[a-z]').hasMatch(password)) {
+      return "Password must contain at least one lowercase letter";
+    }
+
+    // Check for digit
+    if (!RegExp(r'\d').hasMatch(password)) {
+      return "Password must contain at least one number";
+    }
+
+    // Check for special character
+    if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) {
+      return "Password must contain at least one special character";
+    }
+
+    // If all checks pass, return null (no error)
+    return null;
+  }
+
   static String? validateMail(String? email, BuildContext context) {
     if (email == null || email.isEmpty) {
       return 'Email can\'t be empty';

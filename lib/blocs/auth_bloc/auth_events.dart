@@ -48,3 +48,7 @@ class HandleEmailChangeEvent extends AuthEvent {
 
   HandleEmailChangeEvent(this.email);
 }
+
+class HandleObscureChangeEvent extends AuthEvent {
+  HandleObscureChangeEvent();
+}

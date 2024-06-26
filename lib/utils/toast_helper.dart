@@ -6,10 +6,11 @@ import 'package:toastification/toastification.dart';
 ///
 
 class AppToastHelper {
-  static showToast(String msg) {
+  static showToast(String msg, {ToastificationType? type}) {
     toastification.show(
       title: Text(msg),
       autoCloseDuration: const Duration(seconds: 3),
+      type: type ?? ToastificationType.info,
     );
   }
 }

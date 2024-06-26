@@ -1,5 +1,7 @@
+import 'package:ayna_task/config/app_assets.dart';
 import 'package:ayna_task/config/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 ///
 /// Created by Auro on 26/06/24
@@ -25,7 +27,7 @@ class AppErrorWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        // SvgPicture.asset(assetPath ?? 'assets/icons/error.svg'),
+        SvgPicture.asset(assetPath ?? AppAssets.skullStanding),
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -64,28 +66,33 @@ class AppEmptyWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        if (assetPath != null)
-          Image.asset(
-            assetPath ?? 'assets/icons/cute_dog.png',
-            height: 250,
-          ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Text(title ?? 'Empty',
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                )),
-          ),
+        SvgPicture.asset(
+          assetPath ?? AppAssets.skullStanding,
+          height: 250,
         ),
+        if (title != null)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Text(title ?? 'Empty',
+                  style: const TextStyle(
+                    color: AppColors.greyTextColor,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ),
+          ),
         if (onReload != null)
-          MaterialButton(
-            textColor: Colors.white,
-            color: AppColors.primaryColor,
-            onPressed: onReload,
-            child: Text(buttonText ?? 'Reload'),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextButton(
+              onPressed: onReload,
+              child: Text(
+                buttonText ?? 'Reload',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
           )
       ],
     );

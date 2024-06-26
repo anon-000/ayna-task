@@ -1,7 +1,7 @@
 import 'package:ayna_task/config/app_colors.dart';
 import 'package:ayna_task/data_models/chat.dart';
+import 'package:ayna_task/utils/common_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 ///
 /// Created by Auro on 26/06/24
@@ -14,43 +14,58 @@ class ChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      margin: EdgeInsets.fromLTRB(datum.createdBy == "SERVER" ? 16 : 60, 0,
-          datum.createdBy == "SERVER" ? 60 : 16, 0),
-      decoration: BoxDecoration(
-          color: datum.createdBy == "SERVER"
-              ? AppColors.chatServerBG
-              : AppColors.primaryColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(datum.createdBy == "SERVER" ? 0 : 10),
-            topRight: Radius.circular(datum.createdBy == "SERVER" ? 10 : 0),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          )),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            datum.text ?? '',
-            style: TextStyle(
-              color: datum.createdBy == "SERVER"
-                  ? AppColors.greyTextColor
-                  : Colors.white,
-              fontWeight: FontWeight.w500,
+    double width = MediaQuery.of(context).size.width;
+    bool isServer = datum.createdBy == "SERVER";
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Align(
+        alignment: isServer ? Alignment.centerLeft : Alignment.centerRight,
+        child: IntrinsicWidth(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 700 * 0.7),
+            child: Column(
+              crossAxisAlignment:
+                  isServer ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                Container(
+                  constraints: const BoxConstraints(minWidth: 700 * 0.15),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: isServer
+                          ? AppColors.chatServerBG
+                          : AppColors.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(isServer ? 0 : 15),
+                        topRight: Radius.circular(isServer ? 15 : 0),
+                        bottomLeft: const Radius.circular(15),
+                        bottomRight: const Radius.circular(15),
+                      )),
+                  child: Text(
+                    datum.text ?? '',
+                    style: TextStyle(
+                      color: isServer ? AppColors.greyTextColor : Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Text(
+                    datum.createdAt == null
+                        ? "hh:mm am"
+                        : timeInAgoFull(datum.createdAt!),
+                    style: const TextStyle(
+                      color: AppColors.greyTextColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            "${DateFormat("hh:mm a").format(datum.createdAt!)}",
-            style: TextStyle(
-              color: datum.createdBy == "SERVER"
-                  ? AppColors.greyTextColor
-                  : Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 10,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

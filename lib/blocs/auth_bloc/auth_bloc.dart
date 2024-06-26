@@ -7,6 +7,7 @@ import 'package:ayna_task/utils/shared_preference_helper.dart';
 import 'package:ayna_task/utils/toast_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'dart:developer' as developer;
 
 import '../../widgets/buttons/app_primary_button.dart';
@@ -31,6 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, BaseState> {
     on<HandleEmailChangeEvent>(_handleEmail);
     on<HandleNameChangeEvent>(_handleName);
     on<HandlePasswordChangeEvent>(_handlePassword);
+    on<HandleObscureChangeEvent>(_handleObscureChange);
   }
 
   // GoRouter? _router;
@@ -42,6 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, BaseState> {
   late AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
   String name = '', email = '', password = '';
   int authType = 0;
+  bool isObscure = true;
 
   /// Auth type : 0-login, 1-signup
 
@@ -50,11 +53,27 @@ class AuthBloc extends Bloc<AuthEvent, BaseState> {
     await super.close();
   }
 
+  Future<void> _handleObscureChange(
+    HandleObscureChangeEvent event,
+    Emitter<BaseState> emit,
+  ) async {
+    try {
+      isObscure = !isObscure;
+      emit(AuthLoadedState());
+    } catch (_) {
+      developer.log("$_");
+    }
+  }
+
   Future<void> _handleAuthType(
     HandleAuthTypeEvent event,
     Emitter<BaseState> emit,
   ) async {
     try {
+      autoValidateMode = AutovalidateMode.disabled;
+      name = '';
+      email = '';
+      password = '';
       authType = event.type;
       emit(AuthLoadedState());
     } catch (_) {
@@ -79,20 +98,26 @@ class AuthBloc extends Bloc<AuthEvent, BaseState> {
     Emitter<BaseState> emit,
   ) async {
     try {
-      // buttonKey.currentState!.showLoader();
+      buttonKey.currentState!.showLoader();
       final res = await AuthHelper.userLoginWithEmail(email, password);
       if (res != null) {
         final tempUser = User.fromJson(res);
         SharedPreferenceHelper.storeUser(tempUser);
-        // buttonKey.currentState!.hideLoader();
+        buttonKey.currentState!.hideLoader();
         emit(AuthLoadedState());
-        AppToastHelper.showToast("Login Successful");
+        AppToastHelper.showToast(
+          "Login Successful",
+          type: ToastificationType.success,
+        );
         event.onSuccess?.call();
       }
     } catch (_) {
-      // buttonKey.currentState!.hideLoader();
+      buttonKey.currentState!.hideLoader();
       developer.log("AUTH BLOC : $_");
-      AppToastHelper.showToast("$_");
+      AppToastHelper.showToast(
+        "$_",
+        type: ToastificationType.error,
+      );
     }
   }
 
@@ -101,20 +126,26 @@ class AuthBloc extends Bloc<AuthEvent, BaseState> {
     Emitter<BaseState> emit,
   ) async {
     try {
-      // buttonKey.currentState!.showLoader();
+      buttonKey.currentState!.showLoader();
       final res = await AuthHelper.userSignUpWithEmail(name, email, password);
       if (res != null) {
         final tempUser = User.fromJson(res);
         SharedPreferenceHelper.storeUser(tempUser);
-        // buttonKey.currentState!.hideLoader();
+        buttonKey.currentState!.hideLoader();
         emit(AuthLoadedState());
-        AppToastHelper.showToast("Login Successful");
+        AppToastHelper.showToast(
+          "Registration Successful",
+          type: ToastificationType.success,
+        );
         event.onSuccess?.call();
       }
     } catch (_) {
-      // buttonKey.currentState!.hideLoader();
+      buttonKey.currentState!.hideLoader();
       developer.log("$_");
-      AppToastHelper.showToast("$_");
+      AppToastHelper.showToast(
+        "$_",
+        type: ToastificationType.error,
+      );
     }
   }
 

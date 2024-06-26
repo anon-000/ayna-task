@@ -41,6 +41,8 @@ class AppPrimaryButton extends StatefulWidget {
 class AppPrimaryButtonState extends State<AppPrimaryButton> {
   bool _isLoading = false;
 
+  bool get isLoading => _isLoading;
+
   void showLoader() {
     setState(() {
       _isLoading = true;
