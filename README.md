@@ -2,14 +2,24 @@
 
 My Gateway to Ayna AI
 
-## Getting Started
+## More Details
 
-This project is a starting point for a Flutter application.
+This a Flutter Web Application I have developed recently to deal with web sockets & local noSQL DBs like Hive.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [ Application Link ( deployed on Firebase )](https://ayna-assignment-auro.web.app/)
+- [ Backup Link ( Github Pages )](https://auro-dev.github.io/)
+
+
+## Key Points
+- The application uses Bloc for managing states and separates business logic from the Presentation layer.
+- It uses a local db Hive to perform mock user authentication ( works like indexed DB local to the browser ) & also to store the chats locally/cache type of system. With a simple yet good data model, created 2 collections ( Users & Chats ). Passwords stored are hashed using bcrypt salt. For mongo DB like obj id creation I have used a package bson to generate unique Ids.
+- For Routing I have used go_router package ( although I'm a fan of GetX ), but was trying the flutter web first time, so just went with the recommended router package.
+- For small minor animations, I've used lottie ( preloaded assets for optimization ).
+- Used SharedPreference for storing user session and managing LoggedIn and LoggedOut states.
+
+
+
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
