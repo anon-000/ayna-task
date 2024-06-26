@@ -22,7 +22,8 @@ This a Flutter Web Application I have developed recently to deal with web socket
 
 
 Chat With Web Socket Echo Server:
-https://github.com/anon-000/ayna-task/assets/52295426/c277ed02-7ea3-426a-8b53-ad8abb2ce622
+<video src="https://github.com/anon-000/ayna-task/assets/52295426/c277ed02-7ea3-426a-8b53-ad8abb2ce622"></video>
+
 
 
 
